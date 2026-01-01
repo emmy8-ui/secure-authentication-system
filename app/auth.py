@@ -19,7 +19,7 @@ def log_event(event: str, email: str | None):
     db.session.commit()
 
 def validate_password(pw: str) -> tuple[bool, str]:
-    # Basic strong rules (resume-worthy)
+    # Basic rules
     if len(pw) < 8:
         return False, "Password must be at least 8 characters."
     if not any(c.islower() for c in pw):
@@ -81,7 +81,6 @@ def register():
         return jsonify({"error": msg}), 400
 
     if User.query.filter_by(email=email).first():
-        # Don’t reveal too much info; but ok for register to say it exists
         return jsonify({"error": "Email already registered"}), 409
 
     user = User(
